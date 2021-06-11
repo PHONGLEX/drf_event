@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +27,16 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  
 
+# CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+# CELERY_RESULT_BACKEND = config('CELERY_BROKER_URL')
+CELERY_BEAT_SCHEDULE = {
+    "populate_cats": {
+        "task": "django_api.tasks.populate_cat",
+        "schedule": timedelta(seconds=10)
+    }
+}
 
 # Application definition
 
@@ -41,7 +50,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'user',
     'rest_framework',
-    'event_controller'
+    'event_controller',
+    'django_api'
 ]
 
 MIDDLEWARE = [
@@ -136,4 +146,14 @@ AUTH_USER_MODEL = 'user.CustomUser'
 
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "util.exception_handler.custom_exception_handler"
+}
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
 }

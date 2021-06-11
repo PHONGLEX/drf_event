@@ -17,7 +17,7 @@ class EventFeatureSerializer(serializers.ModelSerializer):
 class EventMainSerializer(serializers.ModelSerializer):
 
 	author = serializers.CharField(required=False)
-	author_mail = serializers.ReadOnlyField(source="user.email")
+	author_mail = serializers.ReadOnlyField(source="author.email")
 	author_id = serializers.IntegerField(write_only=True)
 	address_info = AddressGlobalSerializer(read_only=True)
 	address_info_id = serializers.IntegerField(write_only=True)
