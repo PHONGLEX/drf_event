@@ -80,7 +80,7 @@ class EventMainView(ModelViewSet):
 			f_serializer = EventFeatureSerializer(data=data, many=True)
 			f_serializer.is_valid(raise_exception=True)
 			f_serializer.save()
-		return Response(self.serializer_class(self.get_object()).data)
+		return Response(self.serializer_class(self.get_object()).data, status=200)
 
 
 class EventAttenderView(ModelViewSet):
